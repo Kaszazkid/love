@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Will You Be My Valentine?</title>
-  <!-- Import Google Font for romantic feel -->
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
   <style>
     body {
@@ -18,17 +17,17 @@
     }
 
     .title-container {
-      background-color: #f5f5dc; /* Cream color */
+      background-color: #f5f5dc;
       padding: 20px;
       border-radius: 15px;
       display: inline-block;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px; /* Space between the question and buttons */
+      margin-bottom: 20px;
     }
 
     h1 {
       color: #ff5f5f;
-      font-family: 'Dancing Script', cursive; /* Apply romantic font */
+      font-family: 'Dancing Script', cursive;
       font-size: 3rem;
       margin: 0;
     }
@@ -55,11 +54,21 @@
     .yes-btn {
       background-color: #4caf50;
       color: white;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .yes-btn.bounce {
+      transform: scale(1.2);
     }
 
     .no-btn {
       background-color: #ff5f5f;
       color: white;
+      transition: font-size 0.2s ease-in-out;
+    }
+
+    .no-btn.shrinking {
+      font-size: 14px !important;
     }
 
     #final-message {
@@ -68,69 +77,61 @@
       font-size: 1.8rem;
       margin-top: 20px;
     }
-
-    /* Media Query for devices like iPad */
-    @media (max-width: 768px) {
-      h1 {
-        font-size: 2.5rem; /* Slightly smaller font on smaller screens */
-      }
-
-      .title-container {
-        padding: 15px;
-      }
-
-      .gif-container img {
-        max-width: 80%;
-      }
-
-      .btn {
-        font-size: 16px;
-        padding: 8px 16px;
-      }
-    }
-
-    /* Media Query for mobile devices */
-    @media (max-width: 480px) {
-      h1 {
-        font-size: 2rem; /* Smaller font size for very small screens */
-      }
-
-      .title-container {
-        padding: 10px;
-      }
-
-      .btn {
-        font-size: 14px;
-        padding: 6px 12px;
-      }
-    }
   </style>
 
   <script>
     let clickCount = 0;
+    let gifs = [
+      "https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExeDJnZzljMXljaWowZmFwNnptaGkxd3owenJpcGt6d201bHltdHBnZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tpVKvAabWt3G5csMkT/giphy.gif",
+      "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcGg3N2V0YTd3dXg0ZXYzOGtsOXJkeWsxeGQ2cnNoNTZuZ3M2Mjl4ZCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/CM1rHbKDMH2BW/giphy.gif",
+      "https://media.giphy.com/media/fj0X5taf6ITl88WQKT/giphy.gif?cid=ecf05e47td381a6t27h8qs005kpzcq2nlb64ehgk1upiy157&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+      "https://media1.tenor.com/m/TokrEVz73s4AAAAC/shut-the-frick-up.gif"
+    ];
+    let noTexts = [
+      "WHATTTTT? Think again.",
+      "BABYYYYY I LOVE YOU SOO MUCH HOW CAN YOU DO THIS!!!!",
+      "No more saying no!"
+    ];
 
     function handleNoClick() {
       const yesBtn = document.querySelector(".yes-btn");
       const noBtn = document.querySelector(".no-btn");
-
+      const gifImage = document.querySelector(".gif-container img");
+      let audio = new Audio("https://www.myinstants.com/media/sounds/cartoon-plop.mp3");
+      audio.play();
+      
       clickCount++;
-
-      // Make Yes button grow bigger each time they click No
-      yesBtn.style.fontSize = `${18 + clickCount * 10}px`; // Increase the size more significantly
-      noBtn.style.fontSize = `${18 - clickCount * 5}px`; // Decrease the No button size slightly
-
-      // After 3 clicks, remove No button and show final message
+      yesBtn.style.fontSize = `${18 + clickCount * 10}px`;
+      yesBtn.classList.add("bounce");
+      setTimeout(() => yesBtn.classList.remove("bounce"), 200);
+      
+      if (clickCount < gifs.length) {
+        gifImage.src = gifs[clickCount];
+      }
+      
+      if (clickCount < noTexts.length) {
+        noBtn.textContent = noTexts[clickCount];
+      }
+      
       if (clickCount >= 3) {
         noBtn.style.display = "none";
         document.getElementById("final-message").style.display = "block";
+      } else {
+        noBtn.style.fontSize = `${Math.max(14, 18 - clickCount * 5)}px`;
       }
     }
 
     function handleYesClick() {
-      alert("Yay! 💖 You said yes!");
+      let audio = new Audio("https://www.myinstants.com/media/sounds/tiny-button-push.mp3");
+      audio.play();
+      alert("YESSIR");
       document.querySelector('#main-content').style.display = 'none';
       document.querySelector('#video-section').style.display = 'block';
     }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelector(".gif-container img").src = gifs[0];
+    });
   </script>
 </head>
 
@@ -140,24 +141,23 @@
       <h1>Will you be my Valentine?</h1>
     </div>
     <div class="gif-container">
-      <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExeDJnZzljMXljaWowZmFwNnptaGkxd3owenJpcGt6d201bHltdHBnZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/tpVKvAabWt3G5csMkT/giphy.gif" alt="Cute Valentine GIF">
+      <img src="" alt="Cute Valentine GIF">
     </div>
     <div class="buttons">
       <button class="btn yes-btn" onclick="handleYesClick()">Yes</button>
       <button class="btn no-btn" onclick="handleNoClick()">No</button>
     </div>
     <div class="title-container">
-      <h1 id="final-message" style="display: none;">YOU HAVE TO BE MY VALENTINE! 💘</h1>
+      <h1 id="final-message">YOU HAVE TO BE MY VALENTINE! 💘</h1>
     </div>
   </div>
 
   <div id="video-section" style="display: none;">
     <div class="title-container">
-      <h1>CORRECT answer love. I LOVE I LOVE YOU I LOVE YOU FOREVER BABY 💕</h1>
+      <h1>CORRECT answer love. I LOVE YOU FOREVER BABY 💕</h1>
     </div>
     <div class="gif-container">
-      <!-- Replace video with a GIF -->
-      <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGk4ZTRuMHZwYWw4b3hmdzJqbmdiZml0M3hqMjkyaTMwc29nZ3RxNiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/loVEJGOc0KEpiPBtjI/giphy.gif" alt="Love GIF">
+      <img src="https://media1.giphy.com/media/loVEJGOc0KEpiPBtjI/giphy.gif" alt="Love GIF">
     </div>
   </div>
 </body>
